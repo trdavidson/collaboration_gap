@@ -1,0 +1,606 @@
+critic_steps: 0
+existing_dialogue_file: null
+extracted_route_clean:
+-   - 1
+    - 0
+-   - 1
+    - 0
+-   - 2
+    - 0
+-   - 2
+    - 0
+-   - 3
+    - 0
+-   - 3
+    - 0
+-   - 3
+    - 1
+-   - 3
+    - 1
+-   - 3
+    - 2
+-   - 3
+    - 2
+-   - 3
+    - 3
+-   - 3
+    - 3
+-   - 3
+    - 4
+-   - 3
+    - 4
+-   - 3
+    - 5
+-   - 3
+    - 5
+-   - 4
+    - 5
+extracted_route_full:
+-   agent: agent_1
+    coordinates:
+    -   - 0
+        - 0
+    turn: 1
+    turn_type: consider
+-   agent: agent_2
+    coordinates:
+    -   - 0
+        - 2
+    -   - 0
+        - 3
+    -   - 0
+        - 4
+    -   - 0
+        - 5
+    -   - 1
+        - 0
+    -   - 1
+        - 1
+    -   - 1
+        - 5
+    -   - 2
+        - 3
+    -   - 2
+        - 5
+    -   - 3
+        - 3
+    -   - 3
+        - 4
+    -   - 4
+        - 0
+    -   - 4
+        - 2
+    -   - 4
+        - 4
+    -   - 5
+        - 0
+    -   - 5
+        - 1
+    -   - 5
+        - 3
+    -   - 5
+        - 4
+    turn: 2
+    turn_type: consider
+-   agent: agent_1
+    coordinates:
+    -   - 0
+        - 0
+    -   - 1
+        - 0
+    -   - 2
+        - 0
+    -   - 3
+        - 0
+    -   - 3
+        - 1
+    -   - 3
+        - 2
+    -   - 3
+        - 3
+    -   - 3
+        - 4
+    -   - 3
+        - 5
+    -   - 4
+        - 5
+    turn: 3
+    turn_type: consider
+-   agent: both
+    coordinates:
+    -   - 1
+        - 0
+    turn: 4
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 1
+        - 0
+    turn: 5
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 2
+        - 0
+    turn: 6
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 2
+        - 0
+    turn: 7
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 0
+    turn: 8
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 0
+    turn: 9
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 1
+    turn: 10
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 1
+    turn: 11
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 2
+    turn: 12
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 2
+    turn: 13
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 3
+    turn: 14
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 3
+    turn: 15
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 4
+    turn: 16
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 4
+    turn: 17
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 5
+    turn: 18
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 3
+        - 5
+    turn: 19
+    turn_type: move
+-   agent: both
+    coordinates:
+    -   - 4
+        - 5
+    turn: 20
+    turn_type: move
+extracted_route_schema:
+    coordinates_orientation: row_col
+    coordinates_symbols: number_number
+    maze_orientation: top_left
+    maze_origin: '0'
+judge_model_name: gpt-4.1_2025-04-14
+judge_model_provider: azure
+lm_1_name: o3_2025-04-16
+lm_1_provider: azure
+lm_2_name: gpt-4.1-mini_2025-04-14
+lm_2_provider: azure
+max_messages: 50
+maze_coordinates:
+-   - '@'
+    - .
+    - .
+    - '#'
+    - '#'
+    - .
+-   - .
+    - '#'
+    - .
+    - .
+    - .
+    - .
+-   - .
+    - '#'
+    - .
+    - .
+    - .
+    - .
+-   - .
+    - .
+    - .
+    - .
+    - .
+    - .
+-   - .
+    - '#'
+    - .
+    - '#'
+    - .
+    - '*'
+-   - '#'
+    - .
+    - '#'
+    - '#'
+    - '#'
+    - .
+maze_str: '@..##.
+
+    .#....
+
+    .#....
+
+    ......
+
+    .#.#.*
+
+    #.###.'
+messages:
+-   agent_id: real_user
+    message: '# Task
+
+        You are going to play the collaborative maze game "ACTI" together with another
+        agent.
+
+        The maze consists of a grid with walls and a goal.
+
+        Your task is to navigate through the maze, avoiding walls, to reach the goal.
+
+        You will each get your own map of the **same** maze, with some coordinates
+        hidden.
+
+        Because of the hidden coordinates, you will need to communicate with the other
+        agent to share information about the maze and coordinate your movements.
+
+
+        ## Rules
+
+        - You can only move to adjacent cells (up, down, left, right).
+
+        - You can not move diagonally or through walls.
+
+        - The game ends when you have reached the goal or if you step into a wall.
+
+        - **Your game is timed for speed and put on a leaderboard so hurry up!**
+
+        - You can only take one action per turn.
+
+        - An action is **immediately** considered executed once both agents agree.
+
+        - Be sure to say: "ACTI!", after you reached the goal.
+
+
+        ## Communication
+
+        The user will act as an intermediary between you and another agent.
+
+        The user will directly forward your messages to the other agent and vice versa.
+
+        The user will not see or modify the messages, but will relay them as is.
+
+        Messages coming from the other agent will be prefixed with "[other agent]:".
+
+        Messages coming from the user will be prefixed with "[user]:".
+
+        Do not add any additional prefixes or suffixes to your own messages.
+
+
+        ## Map
+
+        Here is **your** map of the maze with a legend of the symbols:
+
+
+        @.????
+
+        ??...?
+
+        .#.?.?
+
+        ...??.
+
+        ?#?#?*
+
+        ??#??.
+
+
+        Legend:
+
+
+        @ - Current Position
+
+        * - Goal Position
+
+        . - Path
+
+        # - Wall
+
+        ? - Hidden Cell
+
+
+        Time to get started! Please begin.'
+    model_name: null
+    model_provider: null
+    turn: 1
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: "Let\u2019s sync up on coordinates first:\n\nI\u2019m using 0-indexed\
+        \ (row, col) with (0, 0) at the top-left.  \nMy current position @ is at (0,\
+        \ 0) and the goal * is at (4, 5).\n\nHere\u2019s everything I can already\
+        \ see:\n\n(0,0) @  \n(0,1) .          (0,2-5) ? ? ? ?  \n(1,0-1) ? ?     \
+        \  (1,2-4) . . .    (1,5) ?  \n(2,0) .  (2,1) #  (2,2) .  (2,3) ?  (2,4) .\
+        \  (2,5) ?  \n(3,0) .  (3,1) .  (3,2) .  (3,3-4) ? ?  (3,5) .  \n(4,0) ? \
+        \ (4,1) #  (4,2) ?  (4,3) #  (4,4) ?  (4,5) *  \n(5,0-1) ? ?  (5,2) #  (5,3-4)\
+        \ ? ?  (5,5) .\n\nUnknown cells for me:  \n(0,2-5), (1,0-1,5), (2,3,5), (3,3-4),\
+        \ (4,0,2,4), (5,0-1,3-4)\n\nCould you tell me what you have for those coordinates?\
+        \  \nThen we can decide the safest path\u2014right along the top row or down\
+        \ the left side both look plausible depending on those unknowns."
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 2
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: "Sure! Here is what I have for those coordinates:\n\n(0,2) #  \n(0,3)\
+        \ #  \n(0,4) .  \n(0,5) .  \n(1,0) .  \n(1,1) #  \n(1,5) .  \n(2,3) ? (still\
+        \ hidden for me)  \n(2,5) .  \n(3,3) .  \n(3,4) .  \n(4,0) .  \n(4,2) .  \n\
+        (4,4) .  \n(5,0) #  \n(5,1) .  \n(5,3) ? (still hidden for me)  \n(5,4) ?\
+        \ (still hidden for me)\n\nSo, the top row has some walls at (0,2) and (0,3),\
+        \ but then open path at (0,4) and (0,5).  \nThe left side has some open paths\
+        \ at (1,0) and (4,0), but a wall at (5,0).  \nWe still have some unknowns\
+        \ at (2,3), (5,3), and (5,4) on my side.\n\nWhat do you think? Should we try\
+        \ going right along the top row or down the left side?"
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 3
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: "Great, thanks! I think the cleanest route is:\n\n(0,0) start  \n\u2193\
+        \ to (1,0)  \n\u2193 to (2,0)  \n\u2193 to (3,0)  \n\u2192 to (3,1)   (I see\
+        \ (3,1) is open.)  \n\u2192 to (3,2)   (open)  \n\u2192 to (3,3)   (you confirmed\
+        \ open)  \n\u2192 to (3,4)   (you confirmed open)  \n\u2192 to (3,5)   (open)\
+        \  \n\u2193 to (4,5)   goal\n\nAll those cells are clear on my map. Unknowns\
+        \ (2,3), (5,3), (5,4) don\u2019t matter for this path.\n\nIf that works for\
+        \ you, let\u2019s take the first step: move DOWN from (0,0) to (1,0)."
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 4
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: Agreed, that path looks safe and clear. Let's move DOWN from (0,0) to
+        (1,0). Ready when you are!
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 5
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: Moving DOWN to (1,0).
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 6
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: Confirmed moving DOWN to (1,0). Next, let's move DOWN again to (2,0).
+        Does that work for you?
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 7
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: Yes, works for me. Moving DOWN to (2,0).
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 8
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: 'Confirmed moving DOWN to (2,0). Next step: move DOWN to (3,0). Ready?'
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 9
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: Ready. Moving DOWN to (3,0).
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 10
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: Confirmed moving DOWN to (3,0). Next, move RIGHT to (3,1). Shall we proceed?
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 11
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: Proceeding RIGHT to (3,1).
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 12
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: Confirmed moving RIGHT to (3,1). Next, move RIGHT to (3,2). Ready?
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 13
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: Ready. Moving RIGHT to (3,2).
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 14
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: Confirmed moving RIGHT to (3,2). Next, move RIGHT to (3,3). Shall we
+        go?
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 15
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: "Let\u2019s go. Moving RIGHT to (3,3)."
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 16
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: Confirmed moving RIGHT to (3,3). Next, move RIGHT to (3,4). Ready?
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 17
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: Ready. Moving RIGHT to (3,4).
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 18
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: Confirmed moving RIGHT to (3,4). Next, move RIGHT to (3,5). Shall we
+        proceed?
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 19
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: Proceeding RIGHT to (3,5).
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 20
+-   agent_id: b60881f5-811b-4d09-a5f3-35ccecd1f003
+    message: Confirmed moving RIGHT to (3,5). Next, move DOWN to (4,5) to reach the
+        goal. Ready?
+    model_name: gpt-4.1-mini_2025-04-14
+    model_provider: azure
+    turn: 21
+-   agent_id: fbb49f91-6c62-41a7-9da0-62d8dc352f61
+    message: Moving DOWN to (4,5). ACTI!
+    model_name: o3_2025-04-16
+    model_provider: azure
+    turn: 22
+num_messages: 22
+num_pre_turns: null
+outcome:
+    outcome_best_position:
+    - 4
+    - 5
+    outcome_invalid_reason: null
+    outcome_num_steps: 9
+    outcome_optimal_num_steps: 9
+    outcome_parsing_error: null
+    outcome_path:
+    -   - 0
+        - 0
+    -   - 1
+        - 0
+    -   - 2
+        - 0
+    -   - 3
+        - 0
+    -   - 3
+        - 1
+    -   - 3
+        - 2
+    -   - 3
+        - 3
+    -   - 3
+        - 4
+    -   - 3
+        - 5
+    -   - 4
+        - 5
+    outcome_solution_type: top_left|row_col|number_number|0
+    outcome_steps_from_goal: 0
+    outcome_success: true
+pre_critic_outcome: null
+pre_interaction_enable_early_stopping: false
+primer_file: ''
+show_same_agent_value: null
+split_1:
+-   - '@'
+    - .
+    - '?'
+    - '?'
+    - '?'
+    - '?'
+-   - '?'
+    - '?'
+    - .
+    - .
+    - .
+    - '?'
+-   - .
+    - '#'
+    - .
+    - '?'
+    - .
+    - '?'
+-   - .
+    - .
+    - .
+    - '?'
+    - '?'
+    - .
+-   - '?'
+    - '#'
+    - '?'
+    - '#'
+    - '?'
+    - '*'
+-   - '?'
+    - '?'
+    - '#'
+    - '?'
+    - '?'
+    - .
+split_2:
+-   - '@'
+    - '?'
+    - .
+    - '#'
+    - '#'
+    - .
+-   - .
+    - '#'
+    - '?'
+    - '?'
+    - '?'
+    - .
+-   - '?'
+    - '?'
+    - '?'
+    - .
+    - '?'
+    - .
+-   - '?'
+    - '?'
+    - '?'
+    - .
+    - .
+    - '?'
+-   - .
+    - '?'
+    - .
+    - '?'
+    - .
+    - '*'
+-   - '#'
+    - .
+    - '?'
+    - '#'
+    - '#'
+    - '?'
+split_view: false
+task_path: ./data/tasks/collaborative/maze_game.yaml
+time_to_complete: 84.15723586082458
+user_intermediate: true

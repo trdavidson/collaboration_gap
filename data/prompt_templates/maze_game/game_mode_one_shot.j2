@@ -1,0 +1,27 @@
+{% extends "base_game.j2" %}
+
+{% block task_description %}
+You are going to play a maze game.
+{% if traps %}
+The maze consists of a grid with traps, walls, and a goal.
+Your task is to navigate through the maze, avoiding traps and walls, to reach the goal.
+{% else %}
+The maze consists of a grid with walls and a goal.
+Your task is to navigate through the maze, avoiding walls, to reach the goal.
+{% endif %}
+{% endblock %}
+
+{% block specific_rules %}
+- You get one shot to complete the maze, so make sure to plan your moves carefully.
+- Provide both your proposed complete solution and any considerations you have made in your reasoning.
+- Provide your final solution as a list of coordinates.
+{% endblock %}
+
+{% block map_description %}
+{% if split_view %}
+Two maps of the maze are provided below, each showing a different portion of the same maze.
+Here are the two maps of the same maze with a legend of the symbols:
+{% else %}
+Here is a map of the maze with a legend of the symbols:
+{% endif %}
+{% endblock %}

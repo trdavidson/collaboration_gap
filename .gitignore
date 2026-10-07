@@ -1,0 +1,55 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+env/
+.python-version
+
+# Credentials -- never commit real API keys; see secrets.yaml.example
+secrets.yaml
+
+# Generated run output -- everything below is produced by running the
+# pipeline, not authored. The relay overview CSV is derived from
+# data/task_results/, so it is only meaningful alongside the rollouts it
+# indexes.
+# Use /* rather than the bare directory so git descends into it and the
+# negation below can take effect.
+data/task_results/*
+# ...except the eight source games shipped so a fresh clone can run a relay
+# game without first generating its own collaborative games.
+# precomputed.csv is a regenerable cache, so it stays ignored.
+!data/task_results/example_relay_source/
+data/task_results/example_relay_source/precomputed.csv
+data/grading_ablations/
+data/strategy_evaluations/
+data/maze_relay_overview_*.csv
+experiments/jobs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Packaging / distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing / linting caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# OS cruft
+.DS_Store
+*Zone.Identifier
+
+# Editor
+.vscode/
+.idea/

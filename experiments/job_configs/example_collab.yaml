@@ -1,0 +1,60 @@
+# Example: collaborative maze game.
+#
+# Two agents each see part of the maze and must talk to each other to agree on
+# a route. This is the paper's main condition.
+#
+#   python -m src.create_maze_jobs --config_file experiments/job_configs/example_collab.yaml
+#   bash experiments/jobs/example_collab/run_all_jobs.sh
+#
+# Every list-valued field below is swept: the job generator takes the cartesian
+# product of them and emits one command per combination, times num_samples.
+
+job_name: "example_collab"
+game_mode: collab
+
+# The two agents, as (agent_1, agent_2) pairs. Use lm_pair rather than
+# lm_1_name/lm_2_name so the pairing is explicit -- the two forms are mutually
+# exclusive. Add more entries to sweep self-play against cross-play.
+lm_pair:
+  - ["gpt-4.1-mini", "gpt-4.1-mini"]
+  # - ["gpt-4.1-mini", "gemini-2.5-flash"]   # cross-play: add more pairs to sweep
+
+# Model that grades the proposed route against the true maze.
+lm_grader_name:
+  - gpt-4.1
+
+# Reasoning effort per agent, as (agent_1, agent_2) pairs -- the asymmetric
+# condition. Values: none | minimal | low | medium | high. Sent only to models
+# that declare ReasoningSupport in data/models.yaml -- currently the OpenAI
+# reasoning models. Mutually exclusive with lm_1_reasoning_effort /
+# lm_2_reasoning_effort.
+# reasoning_effort_pair:
+#   - ["high", "high"]
+#   - ["high", "low"]
+
+# Independent games per combination. Each gets its own random_seed.
+num_samples: 5
+
+# How much of the maze each agent can see, as (agent_1, agent_2). The splits
+# must jointly cover the maze with start and goal visible to both, so the two
+# proportions have to sum to at least (cells + 2) / cells -- 1.056 on a 6x6.
+# Requests below that are raised to the smallest feasible symmetric split; a
+# deviation beyond the start and goal cells both agents share is logged.
+split_proportion_pair:
+  - [0.5, 0.5]
+  # - [1.0, 1.0]   # both agents see everything: the no-asymmetry control
+
+# Whether each agent is told it is playing another instance of itself.
+show_same_agent:
+  - false
+
+# Maze parameters -- keep these identical to the one-shot configs so the solo
+# baseline and the collaborative condition are comparable.
+maze_size:
+  - 6
+min_path_length:
+  - 1.5
+wall_density:
+  - 0.3
+trap_density:
+  - 0.0

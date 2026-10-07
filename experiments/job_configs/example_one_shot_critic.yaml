@@ -1,0 +1,51 @@
+# Example: one-shot maze game with a critic pass.
+#
+# As example_one_shot.yaml, but after the model proposes a route it is shown its
+# own answer and asked to review and resubmit (see
+# data/prompt_templates/maze_game/game_mode_one_shot_critic_step.j2). This
+# separates "could not find the route" from "found it but did not check it":
+# self-correction without a partner.
+#
+#   python -m src.create_maze_jobs --config_file experiments/job_configs/example_one_shot_critic.yaml
+#   bash experiments/jobs/example_one_shot_critic/run_all_jobs.sh
+#
+# NOTE: the critic is a parameter of the one-shot game, not a game mode of its
+# own -- game_mode stays "one-shot" and critic_steps drives the review. There is
+# no "one-shot-critic" mode; passing one raises "Invalid play mode".
+#
+# Both attempts are graded. The saved result.yaml carries the post-critic answer
+# in outcome / extracted_route_* and the original answer in
+# pre_critic_outcome / pre_critic_extracted_route_*, so the improvement from the
+# critic pass is the difference between the two.
+
+job_name: "example_one_shot_critic"
+game_mode: "one-shot"
+
+lm_1_name:
+  - gpt-4.1-mini
+
+lm_grader_name:
+  - gpt-4.1
+
+# Number of review-and-resubmit rounds. Each round costs one more model call and
+# is graded only at the end; the pre-critic fields always hold the first answer,
+# so sweeping this shows whether extra review rounds keep paying off.
+critic_steps:
+  - 1
+  # - 2
+
+num_samples: 5
+
+# Full maze and distributed maze, the paper's two solo conditions.
+split_view:
+  - False
+  - True
+
+maze_size:
+  - 6
+min_path_length:
+  - 1.5
+wall_density:
+  - 0.3
+trap_density:
+  - 0.0

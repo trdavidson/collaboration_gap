@@ -1,0 +1,51 @@
+# Task
+You will be given the proposed solution to a maze game.
+Your task is to extract the proposed route by the agent for the maze.
+The agent might consider multiple coordinates at a time, but only a single coordinate in its final move or proposed solution.
+Record each coordinate of the **final proposed route** in a separate entry.
+
+Further, you should also record the route schema, which describes the format of the coordinates used in the route.
+To the best of your ability, you should determine the schema based on the dialogue.
+
+The schema should include:
+- `maze_origin`: The origin of the maze, i.e., are the agents treating 0 or 1 as the origin for the maze
+
+- `maze_orientation`: The orientation of the maze:
+  "top_left", i.e., if the top left corner is (0, 0)
+  "bottom_left", i.e., if the bottom left corner is (0, 0)
+  "top_right", i.e., if the top right corner is (0, 0)
+  "bottom_right", i.e., if the bottom right corner is (0, 0)
+
+- `coordinate_orientation`: The orientation of the coordinates:
+  "row_col", if the first coordinate is the row and the second is the column,
+  "col_row", if the first coordinate is the column and the second is the row.
+
+- `coordinate_symbols`: The symbols used to represent coordinates:
+  "number_number", e.g., (1, 2)
+  "letter_letter", e.g., (A, B)
+  "letter_number", e.g., (A, 1)
+  "number_letter", e.g., (1, A)
+  "directions", e.g., "up", "down", "left", "right"
+
+Respond in the following format:
+
+```yaml
+route_schema:
+  maze_origin: "<0|1>"
+  maze_orientation: "<top_left | bottom_left | top_right | bottom_right>"
+  coordinates_orientation: "<row_col | col_row>"
+  coordinates_symbols: "<number_number | letter_letter | letter_number | number_letter | directions>"
+route:
+  - turn: <turn_number>
+    coordinates: [[<coordinate_1>, <coordinate_2>], ..]
+    turn_type: "move"  # only consider final moves, not intermediate considerations
+    agent: "<agent_1>"
+  - turn: <turn_number>
+    ...
+```
+
+Do not include any other information, just the YAML object.
+
+Here is the proposed solution:
+
+{{ proposed_solution }}

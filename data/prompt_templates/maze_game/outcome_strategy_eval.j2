@@ -1,0 +1,249 @@
+# Task
+You will be given a dialogue between two agents attempting to collaboratively solve a maze.
+Each agent holds a partial map of the same maze. Extract the key behavioral events described below.
+Be precise: base all judgments strictly on what is observable in the dialogue text.
+
+---
+
+## Map Sharing
+Does each agent share the contents of their map with the other agent at any point?
+Record separately for agent_1 and agent_2.
+
+## Initial Map Sharing Format
+If an agent shares their map, how do they format it in their *first* sharing turn?
+- `visual`: a 2-D grid representation (rows and columns of symbols)
+- `coordinates`: a flat list of (coordinate, cell-content) pairs
+- `grouped`: coordinates grouped by cell type (e.g., "walls at: ..., paths at: ...")
+- `other`: any format not covered above
+
+## Information Withholding
+Does an agent *never* proactively share their map, instead relying entirely on querying the other agent for specific cell values?
+This is `True` only if the agent withholds their full map throughout and exclusively asks point questions.
+
+## Map Sharing — Hidden Cell Treatment
+When sharing their map, does an agent explicitly call out the hidden ("?") cells separately from the known cells,
+rather than embedding "?" inline in the shared representation?
+
+## Map Merging
+After both agents have shared their maps, does each agent actively attempt to synthesize the two partial views
+into a single unified map (e.g., by filling in "?" cells with the partner's data)?
+Record separately for agent_1 and agent_2.
+
+## Map Reconciliation Timing
+When do the agents attempt to merge their maps relative to their first move?
+- `upfront`: agents explicitly combine map knowledge *before* proposing any move
+- `incremental`: agents begin moving quickly and share/merge map data as they navigate
+- `none`: agents never meaningfully reconcile their maps
+
+## Map Annotation
+The agents receive a plain NxN grid with no delimiters. When sharing their map, does each agent add
+any of the following annotations to improve readability?
+- `spacing`: whitespace between cells
+- `borders`: decorative borders around the grid
+- `rows`: row numbers or letters annotated alongside each row
+- `columns`: column numbers or letters annotated above each column
+- `other`: any other visual modification not listed above
+
+## Start and Goal Grounding
+Do the agents explicitly confirm or state the shared coordinates of the start (@) and goal (*) positions?
+Record separately for agent_1 and agent_2.
+
+## Coordinate Origin
+If coordinates are used, does each agent treat the top-left corner as `(0,0)` or `(1,1)`?
+Record separately. Use `null` if coordinates are not used or the origin is ambiguous.
+
+## Map Grounding (Shared Reference Frame)
+Do the agents successfully establish a *shared* coordinate reference frame — i.e., do they verify
+that both agents are using the same origin, orientation, and labeling convention?
+This is `True` only if there is active mutual confirmation, not merely parallel usage.
+
+## Map Updating
+Does each agent re-display their map (or an updated version of it) during the dialogue to reflect
+the current agent position or newly confirmed cell contents?
+
+## Planning Strategy
+Do the agents plan a `global` route (explicitly discussing 3+ steps ahead or a complete path to the goal),
+or a `local` route (discussing only the immediate 1–2 adjacent moves at a time)?
+
+## Action Coordination
+Does one agent initiate more than 75% of the move proposals throughout the dialogue?
+- `joint`: neither agent dominates; both regularly propose moves
+- `agent_1_dominant`: agent_1 initiates >75% of move proposals
+- `agent_2_dominant`: agent_2 initiates >75% of move proposals
+
+## Leadership Shift
+Does the dominant move-proposer change at any point during the dialogue
+(e.g., agent_1 leads early but agent_2 takes over later, or vice versa)?
+If `True`, also record the direction: `agent_1_to_agent_2` or `agent_2_to_agent_1`.
+
+## Move Proposal Count
+Count the number of *turns* in which each agent initiates a new move proposal.
+A turn counts as a proposal if the agent introduces a new destination not previously suggested.
+Turns where an agent merely agrees or confirms do NOT count.
+
+## Move Communication Format
+What format does each agent primarily use to communicate moves?
+- `row_col`: coordinate pair where the first value is the row (e.g., (1, 2) = row 1, col 2)
+- `col_row`: coordinate pair where the first value is the column
+- `directions`: relative directional words only — "up", "down", "left", "right" — *without* coordinates
+- `other`: any other format (e.g., alphanumeric like A1)
+Note: "move right to (1,2)" counts as `row_col` or `col_row`, NOT `directions`.
+Record the format each agent *introduces*, not necessarily what they ultimately converge on.
+
+## Disagreement
+Do the agents encounter any disagreement about map contents, cell values, or proposed moves?
+
+## Disagreement Type
+If disagreement occurs, what is it primarily about?
+- `perceptual`: agents hold conflicting cell values for the same coordinate
+- `grounding`: agents are using incompatible coordinate systems or origins
+- `move_legality`: one agent challenges a proposed move as physically illegal
+- `strategy`: agents disagree on which direction to move, without a factual conflict
+
+## Disagreement Resolution
+If disagreement occurs:
+- `agent_1_won`: agent_2 ultimately adopted agent_1's position
+- `agent_2_won`: agent_1 ultimately adopted agent_2's position
+- `joint_resolution`: both agents updated their positions through mutual discussion
+
+Record whether either agent yielded to a position that was factually incorrect (sycophancy).
+Important: only disagreements of the type "perceptual" or "move legality" can be factually incorrect!
+Example: agent 1 proposes an illegal move, agent 2 challenges the move, but ultimately agrees with agent 1's proposal.
+- `disagreement_agent_1_agrees_to_wrong_move`: agent 1 agrees to factually incorrect move proposed by agent 2
+- `disagreement_agent_2_agrees_to_wrong_move`: agent 2 agrees to factually incorrect move proposed by agent 1
+
+## Ambiguity Heuristic
+What rule, if any, do the agents use when a cell is unknown to both or produces a conflict?
+- `conservative`: treat the cell as a wall/unsafe if there is any doubt
+- `optimistic`: assume the cell is passable and risk stepping on it
+- `avoidance`: explicitly route around all disputed or unknown cells
+- `none_established`: no consistent rule is applied
+
+## Illegal Move Proposals
+Does either agent propose a move that violates maze rules (e.g., diagonal movement, jumping cells,
+moving into a confirmed wall, moving out of bounds)?
+If so, does the other agent catch and flag the illegal move?
+
+## Backtracking
+Do the agents deliberately retrace earlier steps to find an alternative route?
+Distinguish from accidental backtracking caused by confusion.
+
+## Fatal Mistake Recognition
+If agents make a game-ending mistake (e.g., moving into a wall, stepping out of bounds),
+do they explicitly recognize and discuss the error?
+
+## Theory of Mind Reasoning
+Does either agent explicitly reason about what the *other agent can or cannot see*?
+Examples: "Since you have '?' there, you won't know that cell is a wall" or
+"You can see column 3 which I cannot — can you confirm?"
+This is distinct from simply asking for information; the agent must *attribute a knowledge state* to the partner.
+Record separately for agent_1 and agent_2.
+
+## Specific Failure Modes
+- `premature_completion`: Does an agent say "ACTI!" before the goal is actually reached?
+- `agreement_loop`: Do the agents get stuck repeatedly confirming the same (un-executed) move
+  without making progress? (Must be at least 3 consecutive turns of unproductive agreement.)
+- `movement_loop`: Do the agents repeatedly traverse the same sequence of cells without progress?
+- `split_up`: Do the agents attempt to explore different branches of the maze simultaneously,
+  violating the single-agent-position constraint?
+
+## Environmental Deduction
+Do the agents deduce the content of a hidden cell from game state or rules, rather than from their map?
+Example: "We just moved to (2,3) and the game continued, so it must be a path."
+Example: "The only unknown adjacent cell must be passable because all others are walls."
+
+## User / Intermediary Clarification Request
+Do the agents break the collaborative flow to explicitly address the "user" or "intermediary"
+to ask for rule clarification or to report an unresolvable map contradiction?
+
+## First Move Turn
+At which turn number does the first agreed-upon move get executed?
+Count from turn 1. If no move is ever executed, record `null`.
+
+{% if report_interesting %}
+## Interesting Observation
+Note any single, concise observation about agent behavior that is not captured by the fields above
+and that reveals something meaningful about how collaboration succeeded or failed.
+This field is optional — only populate it if there is a genuinely noteworthy pattern.
+Keep it to one sentence.
+{% endif %}
+
+---
+
+# Response Format
+
+Respond strictly in the following YAML format. Do not include any text outside the YAML block.
+
+```yaml
+agent_1_map_sharing: <True | False>
+agent_2_map_sharing: <True | False>
+agent_1_map_sharing_format: <"visual" | "coordinates" | "grouped" | "other" | null>
+agent_2_map_sharing_format: <"visual" | "coordinates" | "grouped" | "other" | null>
+agent_1_adopts_agent_2_map_sharing_format: <True | False | null>
+agent_2_adopts_agent_1_map_sharing_format: <True | False | null>
+agent_1_map_sharing_separate_hidden: <True | False | null>
+agent_2_map_sharing_separate_hidden: <True | False | null>
+agent_1_withheld_map_query_only: <True | False>
+agent_2_withheld_map_query_only: <True | False>
+agent_1_map_merging: <True | False>
+agent_2_map_merging: <True | False>
+map_reconciliation_timing: <"upfront" | "incremental" | "none">
+agent_1_map_addition:
+    spacing: <True | False | null>
+    borders: <True | False | null>
+    rows: <True | False | null>
+    columns: <True | False | null>
+    other: <True | False | null>
+agent_2_map_addition:
+    spacing: <True | False | null>
+    borders: <True | False | null>
+    rows: <True | False | null>
+    columns: <True | False | null>
+    other: <True | False | null>
+agent_1_grounding_start_goal: <True | False>
+agent_2_grounding_start_goal: <True | False>
+agent_1_assumed_origin: <"0_indexed" | "1_indexed" | "other" | null>
+agent_2_assumed_origin: <"0_indexed" | "1_indexed" | "other" | null>
+agents_ground_maps: <True | False>
+agent_1_map_updating: <True | False>
+agent_2_map_updating: <True | False>
+strategy_type: <"global" | "local" | null>
+action_coordination_type: <"joint" | "agent_1_dominant" | "agent_2_dominant" | null>
+leadership_shift: <True | False>
+leadership_shift_direction: <"agent_1_to_agent_2" | "agent_2_to_agent_1" | null>
+agent_1_move_format: <"row_col" | "col_row" | "directions" | "other" | null>
+agent_2_move_format: <"row_col" | "col_row" | "directions" | "other" | null>
+agent_1_num_moves_proposed: <int>
+agent_2_num_moves_proposed: <int>
+encountered_disagreement: <True | False>
+disagreement_type:  # Count the number of disagreement type occurances (if any)
+    perceptual: <int>
+    move_legality: <int>
+    grounding: <int>
+    strategy: <int>
+ambiguity_handling_heuristic: <"conservative" | "optimistic" | "avoidance" | "none_established">
+disagreement_agent_1_agrees_to_wrong_move: <True | False | null>
+disagreement_agent_2_agrees_to_wrong_move: <True | False | null>
+disagreement_strategy: <"agent_1_won" | "agent_2_won" | "joint_resolution" | null>
+agent_1_proposed_illegal_move: <True | False>
+agent_2_proposed_illegal_move: <True | False>
+agent_1_caught_illegal_move: <True | False | null>
+agent_2_caught_illegal_move: <True | False | null>
+backtracked: <True | False>
+recognized_fatal_mistake: <True | False | null>
+agent_1_theory_of_mind: <True | False>
+agent_2_theory_of_mind: <True | False>
+premature_completion_used: <True | False>
+stuck_in_agreement_loop: <True | False>
+stuck_in_movement_loop: <True | False>
+agents_attempted_split_up: <True | False>
+used_environmental_deduction: <True | False>
+requested_user_clarification: <True | False>
+first_move_turn: <int | null>
+{%- if report_interesting -%}
+interesting_observation: <"..." | null>
+{%- endif -%}
+```
+
+# Dialogue
+{{ dialogue }}

@@ -1,0 +1,57 @@
+# Example: one-shot maze game.
+#
+# A single model sees the maze and proposes the entire route in one message,
+# with no dialogue and no turn-by-turn feedback. This is the no-interaction
+# reference point: it isolates how much of a model's performance depends on
+# being able to talk through the problem.
+#
+#   python -m src.create_maze_jobs --config_file experiments/job_configs/example_one_shot.yaml
+#   bash experiments/jobs/example_one_shot/run_all_jobs.sh
+#
+# For the variant that lets the model review and revise its own answer, see
+# example_one_shot_critic.yaml.
+
+job_name: "example_one_shot"
+game_mode: "one-shot"
+
+# The single model proposing the route. One-shot uses lm_1_name; there is no
+# second agent and no lm_pair.
+lm_1_name:
+  - gpt-4.1-mini
+
+# Model that grades the proposed route against the true maze.
+lm_grader_name:
+  - gpt-4.1
+
+# Reasoning effort: none | minimal | low | medium | high. Sent only to models
+# that declare ReasoningSupport in data/models.yaml -- currently the OpenAI
+# reasoning models. This sweep is the interesting one for one-shot, since
+# there is no dialogue to compensate for shallow reasoning.
+# lm_1_reasoning_effort:
+#   - low
+#   - high
+
+# No self-review pass. Set this above 0 for the critic variant.
+critic_steps:
+  - 0
+
+# Independent games per combination. Each gets its own random_seed.
+num_samples: 5
+
+# The paper's two solo conditions: False shows the whole maze in one grid; True
+# shows the same maze as the two partial maps the collaborating agents receive,
+# given to the single model together (the "distributed" condition).
+split_view:
+  - False
+  - True
+
+# Maze parameters. Keep these identical to example_collab.yaml so the
+# conditions are comparable.
+maze_size:
+  - 6
+min_path_length:
+  - 1.5
+wall_density:
+  - 0.3
+trap_density:
+  - 0.0

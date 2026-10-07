@@ -1,0 +1,43 @@
+maze_config:
+  size: [6, 6]
+  trap_density: 0.0 # Fraction of traps in the maze
+  wall_density: 0.2 # Fraction of walls in the maze
+  start_position: [0, 0]
+  goal_position: null
+  trap_symbol: "T"
+  wall_symbol: "#"
+  hidden_symbol: "?"
+  path_symbol: "."
+  goal_symbol: "*"
+  current_symbol: "@"
+  split_1_proportion: 0.5  # Fraction of maze available for agent 1
+  split_2_proportion: 0.5 # Fraction of maze available for agent 2
+  min_path_length: null
+  max_path_length: null
+
+agent_symbols:
+  enable: false
+  agent_1_symbols:
+    trap: null 
+    wall: null
+    hidden: null
+    path: null
+    goal: null
+    current: null
+  agent_2_symbols:
+    trap: null
+    wall: null
+    hidden: null
+    path: null
+    goal: null
+    current: null
+
+noise_level: 0.
+random_seed: null
+agent_1_language: null
+agent_2_language: null
+
+prompts:
+  system_instruction_collab: game_mode_collab.j2  
+  system_instruction_one_shot: game_mode_one_shot.j2
+  first_message: "Ok, let's begin"

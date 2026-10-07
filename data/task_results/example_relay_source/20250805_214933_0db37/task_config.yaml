@@ -1,0 +1,75 @@
+agent_1_language: null
+agent_2_language: null
+agent_symbols:
+    agent_1_symbols:
+        current: null
+        goal: null
+        hidden: null
+        path: null
+        solution: '>'
+        trap: null
+        wall: null
+    agent_2_symbols:
+        current: null
+        goal: null
+        hidden: null
+        path: null
+        solution: '>'
+        trap: null
+        wall: null
+    enable: false
+fname: ./data/tasks/collaborative/maze_game.yaml
+maze_config:
+    base_symbols:
+        current: '@'
+        goal: '*'
+        hidden: '?'
+        path: .
+        solution: '>'
+        trap: T
+        wall: '#'
+    goal_position:
+    - 5
+    - 5
+    max_path_length: 25
+    min_path_length: 9
+    random_seed: 24
+    size:
+    - 6
+    - 6
+    split_1_proportion: 0.5
+    split_2_proportion: 0.5
+    start_position:
+    - 0
+    - 0
+    trap_density: 0.0
+    wall_density: 0.3
+noise_level: 0.0
+pre_maze_game_config:
+    continuation_preamble_file: null
+    continuation_type: pre_game
+    force_model_match: true
+    force_model_match_lm_1: null
+    force_model_match_lm_2: null
+    has_file: false
+    lm_1_enable: true
+    lm_1_name: null
+    lm_1_provider: null
+    lm_2_enable: true
+    lm_2_name: null
+    lm_2_provider: null
+    max_outcome: null
+    max_turns: null
+    min_outcome: null
+    overview_filepath: null
+    primer_file: null
+    provide_outcome_feedback: false
+    relay_point: null
+    specific_filepath: null
+    success: null
+prompts:
+    first_message: Ok, let's begin
+    system_instruction_collab: game_mode_collab.j2
+    system_instruction_one_shot: game_mode_one_shot.j2
+    system_instruction_solo: game_mode_solo.j2
+random_seed: 24

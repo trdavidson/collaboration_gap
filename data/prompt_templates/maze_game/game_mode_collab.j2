@@ -1,0 +1,29 @@
+{% extends "base_game.j2" %}
+
+{% block task_description %}
+You are going to play the collaborative maze game "ACTI" together with another agent.
+{% include "component_agent_identity.j2" %}
+{% if traps %}
+The maze consists of a grid with traps, walls, and a goal.
+Your task is to navigate through the maze, avoiding traps and walls, to reach the goal.
+{% else %}
+The maze consists of a grid with walls and a goal.
+Your task is to navigate through the maze, avoiding walls, to reach the goal.
+{% endif %}
+{% if hidden_coordinates %}
+You will each get your own map of the **same** maze, with some coordinates hidden.
+Because of the hidden coordinates, you will need to communicate with the other agent to share information about the maze and coordinate your movements.
+{% else %}
+You can communicate with the other agent to share information about the maze and coordinate your movements.    
+{% endif %}
+{% endblock %}
+
+{% block specific_rules %}
+- You can only take one action per turn.
+- An action is **immediately** considered executed once both agents agree.
+- Be sure to say: "ACTI!", after you reached the goal.
+{% endblock %}
+
+{% block map_description %}
+Here is **your** map of the maze with a legend of the symbols:
+{% endblock %}

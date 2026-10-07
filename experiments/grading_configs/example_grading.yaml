@@ -1,0 +1,72 @@
+# Example: grading analysis.
+#
+# Re-grades completed games with one or more judge models and measures how far
+# the judges agree -- with themselves across repeated passes (self_consistency)
+# and with each other (inter_consistency).
+#
+#   python -m src.grading_ablation --config_file experiments/grading_configs/example_grading.yaml
+
+random_seed: 42
+
+# Subfolder under ./data/grading_ablations/ to write into. Each run adds a
+# timestamped directory inside it holding sample.csv, graded_files_<judge>.csv
+# and the analysis output.
+#
+# NOTE: this field means two different things depending on config_type. For
+# get_grades and ablation it is a subfolder name, as here. For config_type:
+# analyses it must instead be the full path to an existing timestamped run
+# directory (the one holding sample.csv), because that mode re-analyses grades
+# it did not produce.
+save_folder: example
+
+# Job folders under ./data/task_results to grade. These are the job_name values
+# from the configs in experiments/job_configs.
+experiment_folders:
+  - example_collab
+
+# Judges. Repeat the same model to measure self-consistency; list different
+# models to measure inter-consistency.
+judge_models:
+  - gpt-4.1-mini
+  - gpt-4.1
+
+# What to compute: self_consistency, inter_consistency, or both.
+analyses_to_perform:
+  - inter_consistency
+
+# get_grades re-grades the games and stops; analyses re-analyses an existing
+# grading run (see the save_folder note above); ablation does both in one go and
+# is the mode to start from.
+config_type: ablation
+
+# Applies as written for both judges above. Note that OpenAI reasoning models
+# (gpt-5*, o3, o4-mini) reject temperature outright, so LMFactory clears it for
+# them -- listing one as a judge silently ignores this value.
+temperature: 0.5
+
+# Reasoning effort for the judges: none | minimal | low | medium | high.
+# Sent only to judges that declare ReasoningSupport in data/models.yaml --
+# currently the OpenAI reasoning models.
+reasoning_effort: null
+
+# Sampling: how many graded games to draw, and how to stratify them.
+#
+# min_rollout_length drops games shorter than N messages before sampling. The
+# default of 8 is aimed at full-length collaborative games; short runs (a small
+# max_turns, or the 2-4 message one-shot games) need it lowered or the sample
+# comes back empty.
+min_rollout_length: 4
+sample_size_per_group: 10
+total_sample_size: 100
+groupby_columns:
+  - lm_pair
+  - split_1_proportion
+  - outcome_success
+
+# Restrict to a single experimental cell. Keys are columns of the loaded
+# results; drop this block to grade everything.
+filter_conditions:
+  split_1_proportion: 0.5
+
+# Model that writes the prose summary of the analysis. Set to null to skip.
+summary_interpretation_model_name: gpt-4.1-mini

@@ -1,0 +1,90 @@
+# Example: relay maze game.
+#
+# A relay hands a game in progress from one pair to another. A source pair
+# plays the opening of a maze; at `relay_point` a new pair inherits that
+# conversation as its own and plays on. The paper's question: does a stronger
+# model's opening lift a weaker pair? With A a weaker model and B a stronger
+# one, compare
+#
+#     B A B A | A A A A ...   (relay_point = 4: B played the first moves)
+#     A A A A   A A A A ...   (relay_point = 0: the control)
+#
+#   python -m src.create_maze_jobs --config_file experiments/job_configs/example_relay.yaml
+#   bash experiments/jobs/example_relay/run_all_jobs.sh
+#
+# Runs from a clean clone: it resumes the eight games shipped in
+# data/task_results/example_relay_source/ (o3 as agent 1, gpt-4.1-mini as
+# agent 2; four solved, four failed). The models are placeholders -- to run the
+# mechanism with others, play collaborative games with the source pair you
+# want, build an overview CSV with src/notebooks/03_relay.ipynb, and point the
+# filters below at it.
+
+job_name: "example_relay"
+game_mode: collab
+
+# The pair that TAKES OVER (A A above).
+lm_pair:
+  - ["gpt-4.1-mini", "gpt-4.1-mini"]
+
+lm_grader_name:
+  - gpt-4.1
+
+# Per cell. Every cell draws the same seeds, and the seed picks the source game,
+# so sample n resumes the same game at every relay_point: each relay is
+# compared against the control on the same maze. The paper used 40.
+num_samples: 10
+
+# ---------------------------------------------------------------------------
+# The source games: which overview CSV, and which rows of it.
+# ---------------------------------------------------------------------------
+
+pre_maze_game_overview_filepath:
+  - ./data/task_results/example_relay_source/relay_overview.csv
+pre_maze_game_specific_filepath: null
+
+# How many messages of the source game the new pair inherits. 0 is the control:
+# the same maze from scratch. Keep the largest value below the shortest source
+# game (10 messages here).
+pre_maze_game_relay_point:
+  - 0
+  - 2
+  - 4
+  - 6
+  - 8
+
+# Source pair (B A above). force_model_match must be false: the point is that
+# a different pair takes over.
+pre_maze_game_force_model_match:
+  - false
+pre_maze_game_filter_lm_1_name:
+  - o3
+pre_maze_game_filter_lm_2_name:
+  - gpt-4.1-mini
+
+# Relay from games the source pair solved, and from games it failed but made
+# progress on (outcome bounds apply only when success is false).
+pre_maze_game_filter_success:
+  - true
+  - false
+pre_maze_game_filter_min_outcome:
+  - 0.1
+pre_maze_game_filter_max_outcome:
+  - 0.5
+
+pre_maze_game_filter_maze_size:
+  - [6, 6]
+pre_maze_game_filter_split_proportion_pair:
+  - [0.5, 0.5]
+
+show_same_agent:
+  - false
+
+# Must match the geometry of the source games.
+maze_size:
+  - 6
+min_path_length:
+  - 1.5
+wall_density:
+  - 0.3
+trap_density:
+  - 0.0

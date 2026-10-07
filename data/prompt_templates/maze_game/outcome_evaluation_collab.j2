@@ -1,0 +1,55 @@
+# Task
+You will be given a dialogue between two agents trying to solve a maze.
+Your task is to extract the route taken by the agents through the maze at each turn.
+Some turns, the agents will not move, and some turns they will.
+The agents may communicate moves using directions, e.g., "up", "down", "left", "right".
+Or the agents may communicate coordinates directly, e.g., "Let's move to (3, 4)".
+For turns where both agents agreed to move, record the coordinates or direction of the cell they agreed to move to.
+For turns where they did not move, record the coordinates of the cells or directions they considered, if any.
+Make sure to record what happened at **each turn**.
+You must be consistent in the move format you record, e.g., stick with directions or coordinates, do not mix them unless absolutely necessary.
+
+Further, you should also record the route schema, which describes the format of the coordinates used in the route.
+To the best of your ability, you should determine the schema based on the dialogue.
+
+The schema should include:
+- `maze_origin`: The origin of the maze, i.e., are the agents treating 0 or 1 as the origin for the maze
+
+- `maze_orientation`: The orientation of the maze:
+  "top_left", i.e., if the top left corner is (0, 0)
+  "bottom_left", i.e., if the bottom left corner is (0, 0)
+  "top_right", i.e., if the top right corner is (0, 0)
+  "bottom_right", i.e., if the bottom right corner is (0, 0)
+
+- `coordinate_orientation`: The orientation of the coordinates:
+  "row_col", if the first coordinate is the row and the second is the column,
+  "col_row", if the first coordinate is the column and the second is the row.
+
+- `coordinate_symbols`: The symbols used to represent coordinates:
+  "number_number", e.g., (1, 2)
+  "letter_letter", e.g., (A, B)
+  "letter_number", e.g., (A, 1)
+  "number_letter", e.g., (1, A)
+  "directions", e.g., "up", "down", "left", "right"
+
+Respond in the following format:
+
+```yaml
+route_schema:
+  maze_origin: "<0|1>"
+  maze_orientation: "<top_left | bottom_left | top_right | bottom_right>"
+  coordinates_orientation: "<row_col | col_row>"
+  coordinates_symbols: "<number_number | letter_letter | letter_number | number_letter | directions>"
+route:
+  - turn: <turn_number>
+    coordinates: [[<coordinate_1>, <coordinate_2>], ..]
+    turn_type: "<move|consider>"
+    agent: "<agent_1|agent_2>|both"
+  - turn: <turn_number>
+    ...
+```
+
+Do not include any other information, just the YAML object.
+
+# Dialogue
+{{ dialogue }}

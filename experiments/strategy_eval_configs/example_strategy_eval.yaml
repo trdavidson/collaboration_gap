@@ -1,0 +1,58 @@
+# Example: strategy analysis.
+#
+# Reads the dialogues from completed games and has an evaluation model classify
+# the strategies each agent used -- who proposed what, who yielded, whether a
+# concession was made on correct or incorrect grounds.
+#
+#   python -m src.strategy_evaluation --config_file experiments/strategy_eval_configs/example_strategy_eval.yaml
+
+random_seed: 42
+
+save_results: true
+# Subfolder under ./data/strategy_evaluations/; each run adds a timestamped
+# directory inside it. null becomes "temp".
+save_folder: example
+
+# Model that performs the evaluation.
+eval_model_name: gpt-4.1-mini
+eval_model_provider: openai
+
+# Applies as written for gpt-4.1-mini. Note that if you switch eval_model_name
+# to an OpenAI reasoning model (gpt-5*, o3, o4-mini), LMFactory clears
+# temperature because those endpoints reject it outright.
+temperature: 0.3
+
+# Reasoning effort for the evaluation model: none | minimal | low | medium |
+# high. Ignored unless the model declares ReasoningSupport in data/models.yaml.
+eval_model_reasoning_effort: null
+
+# Which dialogues to evaluate. experiment_folders are job_name values under
+# ./data/task_results; single_filepath evaluates one result.yaml instead.
+single_filepath: null
+experiment_folders:
+  - example_collab
+
+# Loading. recheck_stop_condition re-derives where each dialogue ended rather
+# than trusting the stored turn count; set override_cached_data to re-evaluate
+# dialogues that already have a saved evaluation.
+recheck_stop_condition: true
+stop_condition_min_turns: 6
+override_cached_data: false
+max_turns_to_evaluate: null
+
+# Sampling: how many dialogues to draw, and how to stratify them.
+#
+# min_rollout_length drops games shorter than N messages before sampling. The
+# default of 8 suits full-length collaborative games; lower it for short runs or
+# the sample comes back empty.
+min_rollout_length: 4
+sample_size_per_group: 10
+total_sample_size: 50
+groupby_columns:
+  - lm_pair
+  - split_1_proportion
+
+# Restrict to a single experimental cell. Keys are columns of the loaded
+# results; drop this block to evaluate everything.
+filter_conditions:
+  split_1_proportion: 0.5

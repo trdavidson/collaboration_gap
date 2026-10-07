@@ -1,0 +1,29 @@
+# Task
+You will be given the results from performing several statistical tests.
+
+The context for these tests is as follows:
+- We have N results from certain agent pairs performing a task.
+- We have no way to compute the outcome of the task automatically in closed form.
+- Thus, K graders (human or AI) evaluate the results and provide a score between [-1, 1] and a binary outcome success label.
+- We want to analyze the agreement between graders conditioned on certain ablation axes, e.g., agent-pairs, outcomes, etc.
+
+Your job is to concisely interpret the results of the statistical tests and provide insights into the grading process.
+Discuss each of the test outcomes and finish with a summary of overall implications.
+
+# Data
+
+Here are the results of the statistical tests:
+
+Grades provided by:
+
+{% if same_graders %}
+Independent instances of the same grader
+{% else %}
+Different graders
+{% endif %}
+
+{{ test_results }}
+
+# Reminder
+Be concise and focus on important insights. Add a "TL;DR" with the most important takeaways at the top using bullet points.
+Do not confuse the "graders" with the "agent pairs" being evaluated. The graders are the ones providing the scores and labels for the agent pairs' results.

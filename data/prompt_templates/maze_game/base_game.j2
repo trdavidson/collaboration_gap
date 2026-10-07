@@ -1,0 +1,22 @@
+# Task
+{% block task_description %}
+!!!!--> override
+{% endblock %}
+
+## Rules
+{% block general_rules %}
+{% include "basic_rules.j2" %}
+{% endblock %}
+
+{% block specific_rules %}
+!!!!--> override
+{% endblock %}
+
+## Map
+{% block map_description %}
+!!!!-- override
+{% endblock %}
+
+{{ map_str }}
+
+Time to get started! Please begin.
